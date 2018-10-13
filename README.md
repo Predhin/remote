@@ -33,7 +33,7 @@ npm start
 ### Features
 
 - [x] Computer Vision
-- [] IoT
+- [ ] IoT
 
 ### FAQ
 
