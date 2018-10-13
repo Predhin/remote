@@ -21,13 +21,19 @@ npm install
 
 ```sh
 node src/index.js
-npm start (This can create issues while creating server becasue if there was an already running server it will still be active)
+```
+
+or
+
+```sh
+npm start
+(This can create issues while creating server becasue if there was an already running server it will still be active)
 ```
 
 ### Features
 
 - [x] Computer Vision
-- [x] IoT
+- [] IoT
 
 ### FAQ
 
@@ -37,6 +43,12 @@ How to setup different Git profiles ?
 ### References
 
 - [opencv](https://github.com/justadudewhohacks/opencv4nodejs)
+
+### To Do
+
+- [x] Identify most reliable library for computer vision
+- [ ] Setup usecases
+- [ ] IoT
 
 ### Change Log
 

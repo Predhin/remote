@@ -3,11 +3,6 @@
 We'd love for you to contribute to our source code and to make it even better than it is
 today! Here are the guidelines we'd like you to follow:
 
-    - [Create new Feature](#create-new-feature)
-    - [Issue Fix](#issue-fix)
-    - [Pull Request Submission Guidelines](#pull-request-submission-guidelines)
-    - [Maintainers](#maintainers)
-
 ## Create new Feature
 
 Based on the new requirement request, You need to create a new feature clearly mentioning the name of the feature. Say if you would like to create a Login Screen then the feature name would be *Login*
