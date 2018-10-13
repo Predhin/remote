@@ -1,0 +1,17 @@
+{
+  "name": "remote",
+  "version": "0.1.0",
+  "description": "hand gesture reader",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo \"Start Camera Action\" && npm run dev",
+    "dev": "node ./src/index.js"
+  },
+  "author": "ctswdteam",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "opencv4nodejs": "^4.9.0",
+    "socket.io": "^2.1.1"
+  }
+}

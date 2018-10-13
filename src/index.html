@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Remote</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+  <img id="camera" />
+  <div id="nav2">
+    Detected Count:
+    <a id="text">Loading...</a>
+    </br>
+  </div>
+  
+  <script>
+    var socket = io();
+    var image = document.querySelector('#camera');
+
+    socket.on('image', function (data) {
+      image.src = 'data:image/png;base64,' + data;
+    });
+
+    socket.on('count', function (data) {
+      document.getElementById("text").innerHTML = data;
+    });
+
+  </script>
+</body>
+
+</html>
