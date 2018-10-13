@@ -1,15 +1,18 @@
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const {
+  cv
+} = require('./utils');
 const { startCamera } = require('./webcam/webcamDetection');
 const { handDetection } = require('./handGesture/handGestureRecognition');
 function action(img, rawimg) {
   let hand = handDetection(img);
+  // console.log(cv);
   if (hand) {
     console.log(hand.numFingersUp);
     // emit to socket
-    //TODO: img => buffer
-    // io.emit('image', rawimg.toBuffer().toString('base64'));
+    io.emit('image', cv.imencode('.jpg', rawimg).toString('base64'));
     io.emit('count', hand.numFingersUp);
 
   }
