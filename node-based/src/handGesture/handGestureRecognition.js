@@ -118,7 +118,8 @@ const red = new cv.Vec(0, 0, 255);
 
 exports.handDetection = (frame) => {
   // grabFrames('./data/hand-gesture.mp4', delay, (frame) => {
-  const resizedImg = frame.resizeToMax(640);
+  // Region of interest 
+  const resizedImg = frame.getRegion(new cv.Rect(100, 100, 500, 400));
 
   const handMask = makeHandMask(resizedImg);
   const handContour = getHandContour(handMask);
@@ -183,15 +184,17 @@ exports.handDetection = (frame) => {
     fontScale,
     { color: green, thickness: 2 }
   );
-
   const { rows, cols } = result;
   const sideBySide = new cv.Mat(rows, cols * 2, cv.CV_8UC3);
   result.copyTo(sideBySide.getRegion(new cv.Rect(0, 0, cols, rows)));
   resizedImg.copyTo(sideBySide.getRegion(new cv.Rect(cols, 0, cols, rows)));
 
-  cv.imshow('handMask', handMask);
-  cv.imshow('result', sideBySide);
-  return {numFingersUp};
+  // cv.imshow('handMask', handMask); NOT required
+  cv.imshow('result', sideBySide); // TODO - for Dev purpose. Remove post development!!
+  return {
+    numFingersUp, 
+    capturedArea: resizedImg // TODO - for Dev purpose. Remove post development!!
+  };
   // });
 }
 
