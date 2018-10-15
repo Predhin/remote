@@ -1,4 +1,4 @@
-# remote
+# remote:node-based
 
 Aims to control devices synced through raspberry pi using hand gestures. This codebase is a case study for OpenCV
 
