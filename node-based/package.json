@@ -4,8 +4,7 @@
   "description": "hand gesture reader",
   "main": "index.js",
   "scripts": {
-    "start": "echo \"Start Camera Action\" && npm run dev",
-    "dev": "node ./src/index.js"
+    "start": "node ./src/index.js"
   },
   "author": "ctswdteam",
   "license": "ISC",
