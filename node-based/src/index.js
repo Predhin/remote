@@ -2,30 +2,13 @@ const app = require('express')();
 let http = require('http').Server(app);
 http = require('http-shutdown')(http);
 const io = require('socket.io')(http);
-const {
-  cv
-} = require('./utils');
-const { startCamera } = require('./webcam/webcamDetection');
-const { handDetection } = require('./handGesture/handGestureRecognition');
-function action(img, rawimg) {
-  let hand = handDetection(img);
-  // console.log(cv);
-  if (hand) {
-    console.log(hand.numFingersUp);
-    // emit to socket
-    io.emit('image', cv.imencode('.jpg', rawimg).toString('base64'));
-    // TODO - for Dev purpose. Remove post development!!
-    io.emit('captured-image', cv.imencode('.jpg', hand.capturedArea).toString('base64'))
-    io.emit('count', hand.numFingersUp);
+const { run } = require('./server/server');
 
-  }
-  return hand;
-}
 
-function run() {
+function start() {
   cleanUp();
   setUpServer();
-  startCamera(action);
+  run(http, io);
 }
 
 function cleanUp() {
@@ -58,14 +41,7 @@ function cleanUp() {
 function setUpServer() {
   console.log("Setting up proxy server");
   app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
-  });
-
-  io.on('connection', function (socket) {
-    console.log('a user connected');
-    socket.on('disconnect', function () {
-      console.log('user disconnected');
-    });
+    res.sendFile(__dirname + '/client/index.html');
   });
 
   // create server
@@ -75,4 +51,4 @@ function setUpServer() {
 
 }
 
-run();
+start();
