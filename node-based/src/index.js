@@ -13,6 +13,8 @@ function action(img, rawimg) {
     console.log(hand.numFingersUp);
     // emit to socket
     io.emit('image', cv.imencode('.jpg', rawimg).toString('base64'));
+    // TODO - for Dev purpose. Remove post development!!
+    io.emit('captured-image', cv.imencode('.jpg', hand.capturedArea).toString('base64'))
     io.emit('count', hand.numFingersUp);
 
   }
