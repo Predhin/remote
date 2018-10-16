@@ -119,7 +119,7 @@ const red = new cv.Vec(0, 0, 255);
 exports.handDetection = (frame) => {
   // grabFrames('./data/hand-gesture.mp4', delay, (frame) => {
   // Region of interest 
-  const resizedImg = frame.getRegion(new cv.Rect(100, 100, 500, 400));
+  const resizedImg = frame.getRegion(new cv.Rect(100, 100, 300, 300));
 
   const handMask = makeHandMask(resizedImg);
   const handContour = getHandContour(handMask);

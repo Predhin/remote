@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <img id="camera" />
+  <!--<img id="camera" />-->
   <!--TODO - for Dev purpose. Remove post development!!-->
   <img id="regionOfCapture" />
   <div id="nav2">
@@ -16,25 +16,49 @@
     <a id="text">Loading...</a>
     </br>
   </div>
-  
+
   <script>
     var socket = io();
-    var image = document.querySelector('#camera');
+    // var image = document.querySelector('#camera');
     // TODO - for Dev purpose. Remove post development!!
     var regionOfCapture = document.querySelector('#regionOfCapture');
 
     socket.on('image', function (data) {
-      image.src = 'data:image/png;base64,' + data;
+      // image.src = 'data:image/png;base64,' + data;
     });
     // TODO - for Dev purpose. Remove post development!!
     socket.on('captured-image', function (data) {
       regionOfCapture.src = 'data:image/png;base64,' + data;
     });
-
+    var prevState = 'OFF';
+    var isPromiseActive = false;
     socket.on('count', function (data) {
+      if (!isPromiseActive) {
+        if (data == 0 && prevState != 'OFF') {
+          setTimeout(function () {
+            callLED('OFF');
+          }, 1000);
+          prevState = 'OFF';
+        } else if (data == 5 && prevState != 'ON') {
+          setTimeout(function () {
+            callLED('ON');
+          }, 1000);
+          prevState = 'ON';
+        }
+      }
       document.getElementById("text").innerHTML = data;
     });
 
+    function callLED(state) {
+      var API_URL = `http://192.168.43.147/D0/${state}?`;
+      isPromiseActive = true;
+      fetch(API_URL).then(function (response) { // we assume we will get a response!!
+        isPromiseActive = false;
+        return response.json();
+      }).then(function (data) {
+        isPromiseActive = false;
+      });
+    };
   </script>
 </body>
 
