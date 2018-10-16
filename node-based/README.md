@@ -27,7 +27,6 @@ or
 
 ```sh
 npm start
-(This can create issues while creating server becasue if there was an already running server it will still be active)
 ```
 
 ### Features
