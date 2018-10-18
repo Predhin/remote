@@ -1,8 +1,10 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
+const path = require("path");
 let http = require('http').Server(app);
 http = require('http-shutdown')(http);
 const io = require('socket.io')(http);
-const { run } = require('./server/server');
+const { run } = require('./server/main');
 
 
 function start() {
@@ -40,9 +42,8 @@ function cleanUp() {
 
 function setUpServer() {
   console.log("Setting up proxy server");
-  app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/client/index.html');
-  });
+
+  app.use('/', express.static(__dirname + '/client'))
 
   // create server
   http.listen(2000, function () {
