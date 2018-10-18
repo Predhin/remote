@@ -12,6 +12,9 @@ const { handDetection } = require('./handGesture/handGestureRecognition');
 const { getSpeed } = require('./compute');
 
 let READY_STATE = true;
+let delta = [];
+let prevFingersUp = 0;
+let prevState;
 
 exports.run = (httpObj, ioObj) => {
   http = httpObj;
@@ -29,16 +32,19 @@ function action(img, rawimg) {
     io.emit('captured-image', cv.imencode('.jpg', hand.capturedArea).toString('base64'))
     io.emit('count', hand.numFingersUp);
     // create a delta change based on two reference values
-    let state = getSpeed(0, [], hand.numFingersUp);
-    if (READY_STATE) {
+    let state = getSpeed(prevFingersUp, delta, hand.numFingersUp);
+    if (READY_STATE && prevState !== state) {
       console.log("Sending State: " + state);
       notifyIOTServer(state).then().finally(() => {
         READY_STATE = true;
       });
+      prevState = state;
       READY_STATE = false;
     } else {
+      console.log('Current State :'+state+' and Previous State  :'+prevState);
       console.log("Ignoring gesture because IoT server is still processing request");
     }
+    prevFingersUp = typeof hand.numFingersUp === 'number' || typeof hand.numFingersUp === 'string' ? parseInt(hand.numFingersUp) : 0;
   }
   return hand;
 }
