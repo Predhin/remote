@@ -4,19 +4,29 @@ const path = require("path");
 let http = require('http').Server(app);
 http = require('http-shutdown')(http);
 const io = require('socket.io')(http);
+const Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
+const LED = new Gpio(4, 'out'); //use GPIO pin 4 as output
+const pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 const { run } = require('./server/main');
 
 
 function start() {
   cleanUp();
   setUpServer();
-  run(http, io);
+  run(http, io, app, express, Gpio, LED, pushButton);
+}
+
+function freeUpResources() {
+  LED.writeSync(0); // Turn LED off
+  LED.unexport(); // Unexport LED GPIO to free resources
+  pushButton.unexport(); // Unexport Button GPIO to free resources
 }
 
 function cleanUp() {
   process.stdin.resume();//so the program will not close instantly
 
   function exitHandler(options, exitCode) {
+    freeUpResources();
     if (options.cleanup) console.log('clean');
     if (exitCode || exitCode === 0) console.log(exitCode);
     if (options.exit) process.exit();
@@ -41,13 +51,12 @@ function cleanUp() {
 }
 
 function setUpServer() {
-  console.log("Setting up proxy server");
+  console.log("Setting up server");
 
-  app.use('/', express.static(__dirname + '/client'))
-
+  app.use('/', express.static(__dirname + '/client'));
   // create server
-  http.listen(2000, function () {
-    console.log('listening on localhost:2000');
+  http.listen(8000, function () {
+    console.log('listening on localhost:8000');
   });
 
 }

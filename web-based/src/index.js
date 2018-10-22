@@ -10,7 +10,7 @@ const { run } = require('./server/main');
 function start() {
   cleanUp();
   setUpServer();
-  run(http, io);
+  run(http, io, app, express);
 }
 
 function cleanUp() {
@@ -41,13 +41,12 @@ function cleanUp() {
 }
 
 function setUpServer() {
-  console.log("Setting up proxy server");
+  console.log("Setting up server");
 
-  app.use('/', express.static(__dirname + '/client'))
-
+  app.use('/', express.static(__dirname + '/client'));
   // create server
-  http.listen(2000, function () {
-    console.log('listening on localhost:2000');
+  http.listen(8000, function () {
+    console.log('listening on localhost:8000');
   });
 
 }

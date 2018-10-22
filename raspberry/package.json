@@ -1,7 +1,7 @@
 {
-  "name": "remote",
+  "name": "webbased",
   "version": "0.1.0",
-  "description": "hand gesture reader",
+  "description": "Web Based gesture reader",
   "main": "./src/index.js",
   "scripts": {
     "start": "node ./src/index.js"
@@ -12,6 +12,7 @@
     "config": "^2.0.1",
     "express": "^4.16.4",
     "http-shutdown": "^1.2.0",
+    "onoff": "^3.2.2",
     "opencv4nodejs": "^4.9.0",
     "q": "^1.5.1",
     "request": "^2.88.0",
