@@ -7,7 +7,7 @@ const loadFacenet = require('./dnn/loadFacenet');
 const { extractResults } = require('./dnn/ssdUtils');
 
 exports.runVideoGeneralDetection = (src, detectAny) => grabFrames(src, 1, (frame) => {
-  console.time('detection time');
+  // console.time('detection time');
   const frameResized = frame.resizeToMax(800);
 
   // detect anything
@@ -18,11 +18,11 @@ exports.runVideoGeneralDetection = (src, detectAny) => grabFrames(src, 1, (frame
   }
 
   // cv.imshow('face detection', frameResized);
-  console.timeEnd('detection time');
+  // console.timeEnd('detection time');
 });
 
 exports.runVideoFaceDetection = (src, detectFaces) => grabFrames(src, 1, (frame) => {
-  console.time('detection time');
+  // console.time('detection time');
   const frameResized = frame.resizeToMax(800);
 
   // detect faces
@@ -33,7 +33,7 @@ exports.runVideoFaceDetection = (src, detectFaces) => grabFrames(src, 1, (frame)
   }
 
   cv.imshow('face detection', frameResized);
-  console.timeEnd('detection time');
+  // console.timeEnd('detection time');
 });
 
 function classifyImg(net, img) {

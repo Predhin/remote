@@ -34,6 +34,7 @@ function action(img, rawimg) {
     // create a delta change based on two reference values
     let state = getSpeed(prevFingersUp, delta, hand.numFingersUp);
     if (READY_STATE && prevState !== state) {
+      console.log("Finger count: " + hand.numFingersUp);
       console.log("Sending State: " + state);
       notifyIOTServer(state).then().finally(() => {
         READY_STATE = true;
@@ -41,8 +42,8 @@ function action(img, rawimg) {
       prevState = state;
       READY_STATE = false;
     } else {
-      console.log('Current State :'+state+' and Previous State  :'+prevState);
-      console.log("Ignoring gesture because IoT server is still processing request");
+      // console.log('Current State :' + state + ' and Previous State  :' + prevState);
+      // console.log("Ignoring gesture because IoT server is still processing request");
     }
     prevFingersUp = typeof hand.numFingersUp === 'number' || typeof hand.numFingersUp === 'string' ? parseInt(hand.numFingersUp) : 0;
   }
@@ -50,22 +51,22 @@ function action(img, rawimg) {
 }
 
 function transformRequestUrl(state) {
-  let url = config.get("remote").DEV;
+  let url = config.get("remote").LOCAL;
   switch (state) {
     case "HIGH":
-      url = url + "D1/ON";
+      url = url + "D3/OFF?";
       break;
     case "MEDIUM":
-      url = url + "D1/OFF";
+      url = url + "D2/OFF?";
       break;
     case "LOW":
-      url = url + "D0/ON";
+      url = url + "D1/OFF?";
       break;
     case "OFF":
-      url = url + "D0/OFF";
+      url = url + "D0/OFF?";
       break;
     default:
-      url = url + "D0/OFF";
+      url = url + "D0/OFF?";
   }
   return url;
 }
@@ -76,19 +77,23 @@ function notifyIOTServer(state) {
   let options = {
     url,
     method: "GET",
-    timeout: 1500
+    timeout: 1000
   };
   console.log("Webservice trigger: " + url);
   try {
     request(options, (err, resService, bodyService) => {
+      console.log("Webservice acknowledged ");
       if (err !== null || resService.statusCode.toString() !== "200") {
+        console.log("Error");
         deferred.reject({ "status": resService ? resService.statusCode : 0, "message": "Error reaching IoT server." });
       }
+      console.log("Success");
       perJson = bodyService;
       deferred.resolve(perJson);
     });
   }
   catch (err) {
+    console.log("Error");
     deferred.reject(err);
   }
   return deferred.promise;
