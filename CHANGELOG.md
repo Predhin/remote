@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added in 0.1.0
 
-- Added opencv4nodejs with a simple case study for handgesture
+- Added node-based solution based on opencv4nodejs and web-based solution based on gest.js
 
 ### Changed in 0.1.0
 
