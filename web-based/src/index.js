@@ -5,6 +5,7 @@ let http = require('http').Server(app);
 http = require('http-shutdown')(http);
 const io = require('socket.io')(http);
 const { run } = require('./server/main');
+const bodyParser = require('body-parser');
 
 
 function start() {
@@ -42,6 +43,9 @@ function cleanUp() {
 
 function setUpServer() {
   console.log("Setting up server");
+
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use('/', express.static(__dirname + '/client'));
   // create server

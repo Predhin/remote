@@ -26,14 +26,13 @@ function start() {
 function freeUpResources() {
   LED.writeSync(0); // Turn LED off
   LED.unexport(); // Unexport LED GPIO to free resources
-  pushButton.unexport(); // Unexport Button GPIO to free resources
 }
 
 function cleanUp() {
   process.stdin.resume();//so the program will not close instantly
 
   function exitHandler(options, exitCode) {
-    // freeUpResources();
+    freeUpResources();
     if (options.cleanup) console.log('clean');
     if (exitCode || exitCode === 0) console.log(exitCode);
     if (options.exit) process.exit();

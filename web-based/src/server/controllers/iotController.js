@@ -1,10 +1,35 @@
-const { iotService } = require('../services/iotService');
+const { iotServiceControl, iotServiceState } = require('../services/iotService');
+const { CONSTANTS } = require('../common/constant');
 
 var control = function (req, res) {
     try {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
-        iotService(req).
+        const state = req.body.control.led1 ? CONSTANTS.STATE.ON :  CONSTANTS.STATE.OFF;
+        iotServiceControl(state).
+            then((result) => {
+                res.send(result);
+                res.end();
+            }).
+            catch((err) => {
+                res.status(err.status || 500);
+                res.send(err);
+                res.end();
+            });
+    }
+    catch (err) {
+        res.status(err.status || 500);
+        res.send(err);
+        res.end();
+    }
+};
+
+var stateGET = function (req, res) {
+    try {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+        //TODO: Should read query param and distinguish the urls
+        iotServiceState().
             then((result) => {
                 res.send(result);
                 res.end();
@@ -45,7 +70,8 @@ var home = function (req, res) {
 var iotController = function () {
     return {
         home,
-        control
+        control,
+        stateGET
     };
 };
 
