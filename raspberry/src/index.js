@@ -4,16 +4,23 @@ const path = require("path");
 let http = require('http').Server(app);
 http = require('http-shutdown')(http);
 const io = require('socket.io')(http);
+const bodyParser = require('body-parser');
+/*const LED = {
+  readSync() {
+    return 1;
+  }
+}
+const Gpio = {};*/
 const Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 const LED = new Gpio(4, 'out'); //use GPIO pin 4 as output
-const pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 const { run } = require('./server/main');
+
 
 
 function start() {
   cleanUp();
   setUpServer();
-  run(http, io, app, express, Gpio, LED, pushButton);
+  run(http, io, app, express, Gpio, LED);
 }
 
 function freeUpResources() {
@@ -26,7 +33,7 @@ function cleanUp() {
   process.stdin.resume();//so the program will not close instantly
 
   function exitHandler(options, exitCode) {
-    freeUpResources();
+    // freeUpResources();
     if (options.cleanup) console.log('clean');
     if (exitCode || exitCode === 0) console.log(exitCode);
     if (options.exit) process.exit();
@@ -52,6 +59,9 @@ function cleanUp() {
 
 function setUpServer() {
   console.log("Setting up server");
+
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use('/', express.static(__dirname + '/client'));
   // create server
