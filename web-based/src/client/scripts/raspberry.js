@@ -15,7 +15,7 @@
         if (this.checked) {
             let data = {
                 control: {
-                    led: true
+                    led1: true
                 }
             };
             options.data = JSON.stringify(data);
@@ -24,7 +24,7 @@
         } else {
             let data = {
                 control: {
-                    led: false
+                    led1: false
                 }
             };
             options.data = JSON.stringify(data);

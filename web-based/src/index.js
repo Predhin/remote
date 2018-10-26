@@ -49,8 +49,8 @@ function setUpServer() {
 
   app.use('/', express.static(__dirname + '/client'));
   // create server
-  http.listen(8000, function () {
-    console.log('listening on localhost:8000');
+  http.listen(7000, function () {
+    console.log('listening on localhost:7000');
   });
 
 }
