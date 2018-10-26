@@ -5,7 +5,7 @@ let express = {};
 let Q = require('q');
 let request = require('request');
 process.env.NODE_CONFIG_DIR = __dirname + '/config';
-const { home, control } = require('./controllers/iotController');
+const { home, control, stateGET } = require('./controllers/iotController');
 
 exports.run = (httpObj, ioObj, appObj, expressObj) => {
   http = httpObj;
@@ -19,7 +19,10 @@ function setupRoute() {
 
   app.get("/api", home);
 
-  app.post("/api/control", control);
+  app.put("/api/control", control);
+
+  app.get("/api/state", stateGET);
+
 }
 
 function setupSocket() {
