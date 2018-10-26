@@ -82,7 +82,7 @@ function hideClass(name) {
     * @enum {number}
     */
     Runner.config = {
-        ACCELERATION: 0.001,
+        ACCELERATION: 0.0005,
         BG_CLOUD_SPEED: 0.2,
         BOTTOM_PAD: 10,
         CLEAR_TIME: 3000,
@@ -627,7 +627,7 @@ function hideClass(name) {
         * @param {SoundBuffer} audio Element
         */
         playSound: function (soundBuffer) {
-            soundBuffer.play();
+            // soundBuffer.play();
         }
     };
     /**
@@ -942,7 +942,7 @@ function hideClass(name) {
     * Coefficient for calculating the maximum gap.
     * @const
     */
-    Obstacle.MAX_GAP_COEFFICIENT = 1.5;
+    Obstacle.MAX_GAP_COEFFICIENT = 2;
     /**
     * Maximum obstacle grouping count.
     * @const
