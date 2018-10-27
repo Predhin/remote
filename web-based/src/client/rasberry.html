@@ -14,44 +14,17 @@
     <link href="css/mdb.min.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
     <link href="css/style.min.css" rel="stylesheet">
-    <style type="text/css">
-        html,
-        body,
-        header,
-        .view {
-            height: 100%;
-        }
-
-        @media (max-width: 740px) {
-
-            html,
-            body,
-            header,
-            .view {
-                height: 1050px;
-            }
-        }
-
-        @media (min-width: 800px) and (max-width: 850px) {
-
-            html,
-            body,
-            header,
-            .view {
-                height: 700px;
-            }
-        }
-
-        @media (min-width: 800px) and (max-width: 850px) {
-            .navbar:not(.top-nav-collapse) {
-                background: #1C2331 !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles/rasberry.css">
 </head>
 
 <body>
-
+    <div class="modal fade spinner-modal" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <span class="fa fa-spinner fa-spin fa-5x"></span>
+            </div>
+        </div>
+    </div>
     <header>
 
         <!-- Full Page Intro -->
@@ -118,6 +91,8 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="js/mdb.min.js"></script>
+    <!-- gest.js -->
+    <script type="text/javascript" src="js/gest.min.js"></script>
     <!-- Initializations -->
     <script type="text/javascript">
         // Animations initialization
