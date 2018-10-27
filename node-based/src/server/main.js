@@ -51,8 +51,8 @@ function action(img, rawimg) {
   return hand;
 }
 
-function transformRequestUrl(state) {
-  let url = config.get("remote").LOCAL;
+- function transformRequestBody(state) {
+  let body = {};
   switch (state) {
     case "HIGH":
       url = url + "D3/OFF?";
@@ -72,25 +72,33 @@ function transformRequestUrl(state) {
   return url;
 }
 
+
 function notifyIOTServer(state) {
   let deferred = Q.defer();
-  let url = transformRequestUrl(state);
+  let url = config.get("remote").DEV;
+  let body = {
+    value: state
+  };
   let options = {
     url,
-    method: "GET",
-    timeout: 1000
+    method: "POST",
+    body,
+    timeout: 1000,
+    json: true
   };
   console.log("Webservice trigger: " + url);
   try {
     request(options, (err, resService, bodyService) => {
       console.log("Webservice acknowledged ");
+      console.log(bodyService);
       if (err !== null || resService.statusCode.toString() !== "200") {
         console.log("Error");
         deferred.reject({ "status": resService ? resService.statusCode : 0, "message": "Error reaching IoT server." });
+      } else {
+        console.log("Success");
+        perJson = bodyService;
+        deferred.resolve(perJson);
       }
-      console.log("Success");
-      perJson = bodyService;
-      deferred.resolve(perJson);
     });
   }
   catch (err) {
