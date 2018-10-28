@@ -128,7 +128,13 @@ exports.handDetection = (frame) => {
   }
 
   const maxPointDist = 25;
-  const hullIndices = getRoughHull(handContour, maxPointDist);
+  let hullIndices = [];
+  try {
+  hullIndices = getRoughHull(handContour, maxPointDist);
+  } catch(err){
+    console.log("Detection error");
+    console.log(err);
+  }
 
   // get defect points of hull to contour and return vertices
   // of each hull point to its defect points

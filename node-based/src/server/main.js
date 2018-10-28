@@ -15,6 +15,8 @@ let READY_STATE = true;
 let delta = [];
 let prevFingersUp = 0;
 let prevState;
+let actionCounter = 0;
+let hand;
 
 exports.run = (httpObj, ioObj) => {
   http = httpObj;
@@ -23,72 +25,84 @@ exports.run = (httpObj, ioObj) => {
   main();
 };
 function action(img, rawimg) {
-  let hand = handDetection(img);
-  // console.log(cv);
-  if (hand) {
-    // emit to socket
-    io.emit('image', cv.imencode('.jpg', rawimg).toString('base64'));
-    // TODO - for Dev purpose. Remove post development!!
-    io.emit('captured-image', cv.imencode('.jpg', hand.capturedArea).toString('base64'))
-    io.emit('count', hand.numFingersUp);
-    // create a delta change based on two reference values
-    let state = getSpeed(prevFingersUp, delta, hand.numFingersUp);
-    if (READY_STATE && prevState !== state) {
-      console.log("Sending State: " + state);
-      notifyIOTServer(state).then().finally(() => {
-        READY_STATE = true;
-      });
-      prevState = state;
-      READY_STATE = false;
-    } else {
-      console.log('Current State :'+state+' and Previous State  :'+prevState);
-      console.log("Ignoring gesture because IoT server is still processing request");
+  let originalResizedImg = img.copy().getRegion(new cv.Rect(100, 100, 300, 300));
+  io.emit('captured-image', cv.imencode('.jpg', originalResizedImg).toString('base64'));
+  if (actionCounter % 10 === 0) {
+    hand = handDetection(img);
+    console.log('Hand Logic');
+    // console.log(cv);    
+    if (hand) {
+      let state = getSpeed(prevFingersUp, delta, hand.numFingersUp);
+      // emit fan speed to socket
+      io.emit('count', state);
+      if (READY_STATE && prevState !== state) {
+        console.log("Finger count: " + hand.numFingersUp);
+        console.log("Sending State: " + state);
+        notifyIOTServer(state).then().finally(() => {
+          READY_STATE = true;
+        });
+        prevState = state;
+        READY_STATE = false;
+      } 
+      prevFingersUp = typeof hand.numFingersUp === 'number' || typeof hand.numFingersUp === 'string' ? parseInt(hand.numFingersUp) : 0;
     }
-    prevFingersUp = typeof hand.numFingersUp === 'number' || typeof hand.numFingersUp === 'string' ? parseInt(hand.numFingersUp) : 0;
   }
+  actionCounter++;
   return hand;
 }
 
-function transformRequestUrl(state) {
-  let url = config.get("remote").DEV;
+- function transformRequestBody(state) {
+  let body = {};
   switch (state) {
     case "HIGH":
-      url = url + "D1/ON";
+      url = url + "D3/OFF?";
       break;
     case "MEDIUM":
-      url = url + "D1/OFF";
+      url = url + "D2/OFF?";
       break;
     case "LOW":
-      url = url + "D0/ON";
+      url = url + "D1/OFF?";
       break;
     case "OFF":
-      url = url + "D0/OFF";
+      url = url + "D0/OFF?";
       break;
     default:
-      url = url + "D0/OFF";
+      url = url + "D0/OFF?";
   }
   return url;
 }
 
+
 function notifyIOTServer(state) {
   let deferred = Q.defer();
-  let url = transformRequestUrl(state);
+  let url = config.get("remote").DEV;
+  let body = {
+    value: state
+  };
   let options = {
     url,
-    method: "GET",
-    timeout: 1500
+    method: "POST",
+    body,
+    timeout: 1000,
+    json: true
   };
   console.log("Webservice trigger: " + url);
   try {
     request(options, (err, resService, bodyService) => {
+      console.log("Webservice acknowledged ");
+      console.log(bodyService);
       if (err !== null || resService.statusCode.toString() !== "200") {
+        console.log("Error");
         deferred.reject({ "status": resService ? resService.statusCode : 0, "message": "Error reaching IoT server." });
+      } else {
+        console.log("Success");
+        perJson = bodyService;
+        deferred.resolve(perJson);
       }
-      perJson = bodyService;
-      deferred.resolve(perJson);
     });
   }
   catch (err) {
+    console.log("Error");
     deferred.reject(err);
   }
   return deferred.promise;

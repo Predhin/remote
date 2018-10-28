@@ -6,18 +6,20 @@ let Q = require('q');
 let request = require('request');
 let Gpio = {};
 let LED = {};
-let pushButton = {};
-process.env.NODE_CONFIG_DIR = __dirname + '/config';
-const { home, control } = require('./controllers/iotController');
 
-exports.run = (httpObj, ioObj, appObj, expressObj, GpioObj, LEDObj, pushButtonObj) => {
+process.env.NODE_CONFIG_DIR = __dirname + '/config';
+const { home, ledStateGET, ledStatePUT } = require('./controllers/iotController');
+const mqtt = require('mqtt');
+const my_topic_name = 'predhin/feeds/switcher';
+const { ledON, ledOFF, initLED } = require('./iot/iotManager');
+
+exports.run = (httpObj, ioObj, appObj, expressObj, GpioObj, LEDObj) => {
   http = httpObj;
   io = ioObj;
   app = appObj;
   express = expressObj;
   Gpio = GpioObj;
   LED = LEDObj;
-  pushButton = pushButtonObj;
   main();
 };
 
@@ -25,34 +27,44 @@ function setupRoute() {
 
   app.get("/api", home);
 
-  app.post("/api/control", control);
+  app.get("/api/led/state", ledStateGET);
+
+  app.put("/api/led/state", ledStatePUT);
 }
 
-function setupSocket() {
-  io.on('connection', function (socket) {
-    console.log('a user connected');
-    var lightvalue = 0; //static variable for current status
-    pushButton.watch(function (err, value) { //Watch for hardware interrupts on pushButton
-      if (err) { //if an error
-        console.error('There was an error', err); //output error message to console
-        return;
-      }
-      lightvalue = value;
-      socket.emit('light', lightvalue); //send button status to client
-    });
-    socket.on('light', function (data) { //get light switch status from client
-      lightvalue = data;
-      if (lightvalue != LED.readSync()) { //only change LED if status has changed
-        LED.writeSync(lightvalue); //turn LED on or off
-      }
-    });
-    socket.on('disconnect', function () {
-      console.log('user disconnected');
-    });
+function setUpMQTT() {
+  var client = mqtt.connect('mqtts://io.adafruit.com', {
+    port: 8883,
+    username: 'predhin',
+    password: 'bcb7f4793cb64f028ed58092cd6b647d'
+  });
+
+  client.on('connect', () => {
+    client.subscribe(my_topic_name)
+  });
+
+  client.on('error', (error) => {
+    console.log('MQTT Client Errored');
+    console.log(error);
+  });
+
+  client.on('message', function (topic, message) {
+    // Do some sort of thing here.
+    // Could be GPIO related, or in my case running system commands to
+    // trigger the omxplayer app to play a certain file.
+    if(message.toString() === "ON") {
+      ledON(LED);
+    }
+    if(message.toString() === "OFF") {
+      ledOFF(LED);
+    }
+
+    console.log(message.toString()); // for demo purposes.
   });
 }
 
 function main() {
-  setupSocket();
+  initLED(LED);
+  setUpMQTT();
   setupRoute();
 }

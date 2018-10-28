@@ -5,6 +5,7 @@ let http = require('http').Server(app);
 http = require('http-shutdown')(http);
 const io = require('socket.io')(http);
 const { run } = require('./server/main');
+const opn = require('opn');
 
 
 function start() {
@@ -48,6 +49,10 @@ function setUpServer() {
   // create server
   http.listen(2000, function () {
     console.log('listening on localhost:2000');
+    if(process.argv.length > 2 && (process.argv[2].toLowerCase() == 'ui')){
+      console.log('Opening Default Browser');
+      opn('http://localhost:2000/');
+    }    
   });
 
 }

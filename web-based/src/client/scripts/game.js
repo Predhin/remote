@@ -19,7 +19,7 @@
             }
         } else if (TRexInstance.crashed) {
             wave.counter++;
-            if (gesture.left) {
+            /*if (gesture.left) {
                 wave.leftCounter++;
                 wave.rightCounter = 0;
                 wave.leftCounter > 1 ? window.location = 'index.html' : undefined;
@@ -27,7 +27,7 @@
                 wave.leftCounter = 0;
                 wave.rightCounter++;
                 wave.rightCounter > 1 ? window.location = 'rasberry.html' : undefined;
-            } else {
+            } else {*/
                 wave.leftCounter = 0;
                 wave.rightCounter = 0;
                 if (wave.counter > 2) {
@@ -35,7 +35,7 @@
                     TRexInstance.onKeyUp({...keyDownEvtObj, type : 'keyup'});
                     wave.counter = 0;
                 }
-            }
+            //}
         } else {
             TRexInstance.onKeyDown(keyDownEvtObj);
             TRexInstance.onKeyUp({...keyDownEvtObj, type : 'keyup'});

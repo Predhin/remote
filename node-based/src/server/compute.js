@@ -21,7 +21,7 @@ exports.getSpeed = (previous, delta, current) => {
     }
   }
   let change = (current === 0 || current > 4) ? current : calculate();
-  console.log('Change :'+change);
+  // console.log('Change :'+change);
   let state = "OFF";
   switch (true) {
     case change === 0:

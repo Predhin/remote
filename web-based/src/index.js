@@ -5,6 +5,8 @@ let http = require('http').Server(app);
 http = require('http-shutdown')(http);
 const io = require('socket.io')(http);
 const { run } = require('./server/main');
+const bodyParser = require('body-parser');
+const opn = require('opn');
 
 
 function start() {
@@ -43,10 +45,17 @@ function cleanUp() {
 function setUpServer() {
   console.log("Setting up server");
 
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+
   app.use('/', express.static(__dirname + '/client'));
   // create server
-  http.listen(8000, function () {
-    console.log('listening on localhost:8000');
+  http.listen(7000, function () {
+    console.log('listening on localhost:7000');
+    if(process.argv.length > 2 && (process.argv[2].toLowerCase() == 'ui')){
+      console.log('Opening Default Browser');
+      opn('http://localhost:7000/');
+    }
   });
 
 }
