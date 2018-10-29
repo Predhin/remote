@@ -4,6 +4,7 @@ let Q = require('q');
 let request = require('request');
 process.env.NODE_CONFIG_DIR = __dirname + '/config';
 let config = require("config");
+const Sleep = require('sleep');
 const {
   cv
 } = require('./utils');
@@ -40,10 +41,10 @@ function action(img, rawimg) {
         console.log("Sending State: " + finalState);
         // emit fan speed to socket
         io.emit('count', finalState);
-        notifyIOTServer(finalState).then().finally(() => {
+        notifyIOTServer(finalState, 2000).then().finally(() => {
           READY_STATE = true;
           io.emit('startScan', true);
-          
+
         });
         prevState = finalState;
         READY_STATE = false;
@@ -93,7 +94,7 @@ function getFinalState(inputObj) {
 }
 
 
-function notifyIOTServer(state) {
+function notifyIOTServer(state, alwaysDelayThisMuchTime) {
   let deferred = Q.defer();
   let url = config.get("remote").DEV;
   let body = {
@@ -104,21 +105,28 @@ function notifyIOTServer(state) {
     method: "POST",
     body,
     timeout: 1000,
-    json: true
+    json: true,
+    time: true
   };
+  let delay = 0;
   console.log("Webservice trigger: " + url);
   try {
     request(options, (err, resService, bodyService) => {
       console.log("Webservice acknowledged ");
       console.log(bodyService);
-      if (err !== null || resService.statusCode.toString() !== "200") {
-        console.log("Error");
-        deferred.reject({ "status": resService ? resService.statusCode : 0, "message": "Error reaching IoT server." });
-      } else {
-        console.log("Success");
-        perJson = bodyService;
-        deferred.resolve(perJson);
-      }
+      delay = alwaysDelayThisMuchTime ? (resService ? (alwaysDelayThisMuchTime - resService.elapsedTime) : 
+      alwaysDelayThisMuchTime) : 0;
+      console.log("Delaying response for : " + delay);
+      setTimeout(() => {
+        if (err !== null || resService.statusCode.toString() !== "200") {
+          console.log("Error");
+          deferred.reject({ "status": resService ? resService.statusCode : 0, "message": "Error reaching IoT server." });
+        } else {
+          console.log("Success");
+          perJson = bodyService;
+          deferred.resolve(perJson);
+        }
+      }, delay);
     });
   }
   catch (err) {
