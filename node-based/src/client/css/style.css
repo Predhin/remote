@@ -2011,4 +2011,69 @@ form label {
 /*# sourceMappingURL=style.css.map */
 .video_box{
   height:300px;
+  border: 2px solid #4d4d4d;
+  width: 100%;
+  height: 100%;
+  
+  border-radius: 30px;
+  padding:30px;
+}
+.reading-box{
+  height:300px;
+  border: 2px solid #4d4d4d;
+  width: 100%;
+  height: 100%;
+  
+  border-radius: 30px;
+  padding:30px;
+}
+.video-container{
+  padding: 30px;
+}
+.margin-top-100{
+  margin-top: 100px;
+}
+
+.loader-wrapper {
+  border: 5px dashed lightgray;
+  width: 200px;
+  height: 200px;
+}
+.loader-wrapper .fa{
+  position: absolute;
+    top: 10%;
+    font-size: 130px;
+    margin: 20px 30px;
+}
+.loader-scanner {
+  height: 20px;
+  background-color: deepskyblue;
+  opacity: .5;
+  display: inline-block;
+  width: 100%;
+  animation: scan 2s linear 1s infinite normal;
+  animation-play-state: running;
+}
+.loader-scanner.stop {
+  animation-play-state: paused;
+}
+@keyframes scan {
+  0%
+  {
+      margin-top: 0;
+  }
+
+  50%
+  {
+      margin-top: 90%;
+  }
+}
+#text {
+position: absolute;
+    bottom: 15%;
+    text-align: center;
+    font-weight: bold;
+    width: 65%;
+    font-size: xx-large;
+    color: limegreen;
 }

@@ -13,16 +13,11 @@
     });
     socket.on('count', function (data) {
         document.getElementById("text").innerHTML = data;
+        var scanner = document.getElementById('loader-scanner');
+        if(data === "OFF") {            
+            scanner.className = "loader-scanner stop";
+        } else {
+            scanner.className = "loader-scanner";
+        }
     });
-
-    /*function callLED(state) {
-      var API_URL = `http://192.168.43.147/D0/${state}?`;
-      isPromiseActive = true;
-      fetch(API_URL).then(function (response) { // we assume we will get a response!!
-        isPromiseActive = false;
-        return response.json();
-      }).then(function (data) {
-        isPromiseActive = false;
-      });
-    };*/
 })();
