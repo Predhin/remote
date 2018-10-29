@@ -20,7 +20,8 @@ exports.getSpeed = (previous, delta, current) => {
       }
     }
   }
-  let change = (current === 0 || current > 4) ? current : calculate();
+  // let change = (current === 0 || current > 4) ? current : calculate();
+  let change = current;
   // console.log('Change :'+change);
   let state = "OFF";
   switch (true) {

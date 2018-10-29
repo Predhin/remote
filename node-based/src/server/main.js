@@ -4,6 +4,7 @@ let Q = require('q');
 let request = require('request');
 process.env.NODE_CONFIG_DIR = __dirname + '/config';
 let config = require("config");
+const Sleep = require('sleep');
 const {
   cv
 } = require('./utils');
@@ -17,6 +18,7 @@ let prevFingersUp = 0;
 let prevState;
 let actionCounter = 0;
 let hand;
+let fingerNumOObj = {};
 
 exports.run = (httpObj, ioObj) => {
   http = httpObj;
@@ -27,28 +29,47 @@ exports.run = (httpObj, ioObj) => {
 function action(img, rawimg) {
   let originalResizedImg = img.copy().getRegion(new cv.Rect(100, 100, 300, 300));
   io.emit('captured-image', cv.imencode('.jpg', originalResizedImg).toString('base64'));
-  if (actionCounter % 10 === 0) {
-    hand = handDetection(img);
-    console.log('Hand Logic');
-    // console.log(cv);    
-    if (hand) {
-      let state = getSpeed(prevFingersUp, delta, hand.numFingersUp);
-      // emit fan speed to socket
-      io.emit('count', state);
-      if (READY_STATE && prevState !== state) {
+  hand = handDetection(img);
+  if (hand) {
+    let state = getSpeed(prevFingersUp, delta, hand.numFingersUp);
+    fingerNumOObj[state] = fingerNumOObj[state] ? fingerNumOObj[state] + 1 : 1;
+    if (actionCounter % 10 === 0) {
+      let finalState = getFinalState(fingerNumOObj);
+      console.log(JSON.stringify(fingerNumOObj));
+      if (READY_STATE && prevState !== finalState) {
         console.log("Finger count: " + hand.numFingersUp);
-        console.log("Sending State: " + state);
-        notifyIOTServer(state).then().finally(() => {
+        console.log("Sending State: " + finalState);
+        // emit fan speed to socket
+        io.emit('count', finalState);
+        notifyIOTServer(finalState, 2000).then().finally(() => {
           READY_STATE = true;
+          io.emit('startScan', true);
+
         });
-        prevState = state;
+        prevState = finalState;
         READY_STATE = false;
-      } 
-      prevFingersUp = typeof hand.numFingersUp === 'number' || typeof hand.numFingersUp === 'string' ? parseInt(hand.numFingersUp) : 0;
+      }
+      fingerNumOObj = {};
     }
+    prevFingersUp = typeof hand.numFingersUp === 'number' || typeof hand.numFingersUp === 'string' ? parseInt(hand.numFingersUp) : 0;
   }
+
   actionCounter++;
   return hand;
+}
+
+function getFinalState(inputObj) {
+  let maxItem = {
+    val: undefined,
+    count: undefined
+  };
+  for (let item in inputObj) {
+    if (!maxItem.val || inputObj[item] >= maxItem.count) {
+      maxItem = { val: item, count: inputObj[item] };
+    }
+  }
+
+  return maxItem.val;
 }
 
 - function transformRequestBody(state) {
@@ -73,7 +94,7 @@ function action(img, rawimg) {
 }
 
 
-function notifyIOTServer(state) {
+function notifyIOTServer(state, alwaysDelayThisMuchTime) {
   let deferred = Q.defer();
   let url = config.get("remote").DEV;
   let body = {
@@ -84,21 +105,28 @@ function notifyIOTServer(state) {
     method: "POST",
     body,
     timeout: 1000,
-    json: true
+    json: true,
+    time: true
   };
+  let delay = 0;
   console.log("Webservice trigger: " + url);
   try {
     request(options, (err, resService, bodyService) => {
       console.log("Webservice acknowledged ");
       console.log(bodyService);
-      if (err !== null || resService.statusCode.toString() !== "200") {
-        console.log("Error");
-        deferred.reject({ "status": resService ? resService.statusCode : 0, "message": "Error reaching IoT server." });
-      } else {
-        console.log("Success");
-        perJson = bodyService;
-        deferred.resolve(perJson);
-      }
+      delay = alwaysDelayThisMuchTime ? (resService ? (alwaysDelayThisMuchTime - resService.elapsedTime) : 
+      alwaysDelayThisMuchTime) : 0;
+      console.log("Delaying response for : " + delay);
+      setTimeout(() => {
+        if (err !== null || resService.statusCode.toString() !== "200") {
+          console.log("Error");
+          deferred.reject({ "status": resService ? resService.statusCode : 0, "message": "Error reaching IoT server." });
+        } else {
+          console.log("Success");
+          perJson = bodyService;
+          deferred.resolve(perJson);
+        }
+      }, delay);
     });
   }
   catch (err) {
