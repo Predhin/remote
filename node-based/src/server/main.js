@@ -34,6 +34,7 @@ function action(img, rawimg) {
     fingerNumOObj[state] = fingerNumOObj[state] ? fingerNumOObj[state]++ : 1;
     if (actionCounter % 10 === 0) {
       let finalState = getFinalState(fingerNumOObj);
+      console.log(JSON.stringify(fingerNumOObj));
       if (READY_STATE && prevState !== finalState) {
         console.log("Finger count: " + hand.numFingersUp);
         console.log("Sending State: " + finalState);
@@ -62,7 +63,7 @@ function getFinalState(inputObj) {
   };
   for (let item in inputObj){
     if(!maxItem.val || inputObj[item] >= maxItem.count){
-      maxItem = {val:item, count = inputObj[item]};
+      maxItem = {val:item, count: inputObj[item]};
     }
   }  
   
