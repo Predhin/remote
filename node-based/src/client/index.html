@@ -1,81 +1,101 @@
-<!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Digi 360</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Digi360</title>
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="css/animate.css">
-  <!-- Bootstrap  -->
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <!-- Theme style  -->
-  <link rel="stylesheet" href="css/style.css">
-  <script src="/socket.io/socket.io.js"></script>
-</head>
-
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link rel='stylesheet' href='css/style.css'  />
+    </head>
 <body>
-  <div class="gtco-loader"></div>
-
-  <div id="page">
-
-    <header>
-      <div id="gtco-header" class="gtco-cover gtco-cover-md" role="banner" style="background-image: url(images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
-        <div class="gtco-container">
-          <div class="row">
-            <div class="col-md-12 col-md-offset-0 text-left">
-              <div class="row row-mt-5em">
-                <div class="col-md-6 col-md-push-1 animate-box video-space" data-animate-effect="fadeInLeft">
-                  <div class="form-wrap">
-                    <div class="tab">
-                      <div class="tab-content">
-                        <div class="tab-content-inner active">
-                          <h3 class="cursive-font">Scaning Guesture...</h3>
-                        </div>
-                        <div class="video_box">
-                          <img id="regionOfCapture" />
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3 col-md-push-1 animate-box data-space" data-animate-effect="fadeInLeft">
-                  <div class="form-wrap">
-                    <div class="tab">
-                      <div class="tab-content value-space">
-                        <div>
-                          <div class="lds-ring">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                          </div>
-                          <a id="text">Loading...</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+<div ng-app="gestureControl" ng-controller="myCtrl">
+    <header class="header">
+        <div class="container">
+            <h1 class="title24 text-center">Gesture Control</h1>
         </div>
-      </div>
     </header>
+    <div class="container">
+        <div class="main-content">
+            <div class="clearfix">
+                <div class="col-md-8">
+                    <section class="section-video">
+                        <div class="box-video">
+                            <a href="#">
+                                <!--video width="100%" controls>
+                                    <source src="video/robo.mp4" type="video/mp4">
+                                </video-->                                                          
+                            </a>
+                        </div>
+                        <div class="box-count">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="box-image">
+                                        <img src="images/one.JPG" alt="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3 hide">
+                                    <div class="box-image">
+                                        <img src="images/two.JPG" alt="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3 hide">
+                                    <div class="box-image">
+                                        <img src="images/three.JPG" alt="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3 hide">
+                                    <div class="box-image">
+                                        <img src="images/four.JPG" alt="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3 hide">
+                                    <div class="box-image">
+                                        <img src="images/five.JPG" alt="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="box-image">
+                                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-4">
+                    <div class="section-result">
+                        <div class="box-image speed-zero">
+                            <img src="images/speed-zero.png" alt="" />
+                            <h4>STOP</h4>
+                        </div>
+                        <div class="box-image speed-low hide">
+                            <img src="images/speed-low.png" alt="" />
+                            <h4>LOW</h4>
+                        </div>
+                        <div class="box-image speed-medium hide">
+                            <img src="images/speed-medium.png" alt="" />
+                            <h4>MEDIUM</h4>
+                        </div>
+                        <div class="box-image speed-high hide">
+                            <img src="images/speed-high.png" alt="" />
+                            <h4>HIGH</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
 
-  </div>
+    </footer>
 
-  <!-- jQuery -->
+  <!-- Scripts -->
+  <script src="js/angular.min.js"></script>
   <script src="js/jquery.min.js"></script>
-  <!-- jQuery Easing -->
-  <script src="js/jquery.easing.1.3.js"></script>
-  <!-- Bootstrap -->
   <script src="js/bootstrap.min.js"></script>
-  <!-- Waypoints -->
-  <script src="js/jquery.waypoints.min.js"></script>
   <script src="js/main.js"></script>
-  <script src="./js/script.js"></script>
 </body>
 
 </html>
