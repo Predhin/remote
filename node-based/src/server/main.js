@@ -31,7 +31,7 @@ function action(img, rawimg) {
   hand = handDetection(img);
   if (hand) {
     let state = getSpeed(prevFingersUp, delta, hand.numFingersUp);
-    fingerNumOObj[state] = fingerNumOObj[state] ? fingerNumOObj[state]++ : 1;
+    fingerNumOObj[state] = fingerNumOObj[state] ? fingerNumOObj[state] + 1 : 1;
     if (actionCounter % 10 === 0) {
       let finalState = getFinalState(fingerNumOObj);
       console.log(JSON.stringify(fingerNumOObj));
@@ -43,11 +43,12 @@ function action(img, rawimg) {
         notifyIOTServer(finalState).then().finally(() => {
           READY_STATE = true;
           io.emit('startScan', true);
-          fingerNumArr={};
+          
         });
         prevState = finalState;
         READY_STATE = false;
       }
+      fingerNumOObj = {};
     }
     prevFingersUp = typeof hand.numFingersUp === 'number' || typeof hand.numFingersUp === 'string' ? parseInt(hand.numFingersUp) : 0;
   }
@@ -58,15 +59,15 @@ function action(img, rawimg) {
 
 function getFinalState(inputObj) {
   let maxItem = {
-    val:undefined,
-    count : undefined
+    val: undefined,
+    count: undefined
   };
-  for (let item in inputObj){
-    if(!maxItem.val || inputObj[item] >= maxItem.count){
-      maxItem = {val:item, count: inputObj[item]};
+  for (let item in inputObj) {
+    if (!maxItem.val || inputObj[item] >= maxItem.count) {
+      maxItem = { val: item, count: inputObj[item] };
     }
-  }  
-  
+  }
+
   return maxItem.val;
 }
 
