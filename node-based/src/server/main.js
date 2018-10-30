@@ -114,8 +114,9 @@ function notifyIOTServer(state, alwaysDelayThisMuchTime) {
     request(options, (err, resService, bodyService) => {
       console.log("Webservice acknowledged ");
       console.log(bodyService);
-      delay = alwaysDelayThisMuchTime ? (resService ? (alwaysDelayThisMuchTime - resService.elapsedTime) : 
-      alwaysDelayThisMuchTime) : 0;
+      /* delay = alwaysDelayThisMuchTime ? (resService ? (alwaysDelayThisMuchTime - resService.elapsedTime) : 
+      alwaysDelayThisMuchTime) : 0; */
+      delay = alwaysDelayThisMuchTime ? alwaysDelayThisMuchTime : 0;
       console.log("Delaying response for : " + delay);
       setTimeout(() => {
         if (err !== null || resService.statusCode.toString() !== "200") {

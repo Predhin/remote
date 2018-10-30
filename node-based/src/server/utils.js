@@ -12,11 +12,11 @@ exports.grabFrames = (videoFile, delay, onFrame) => {
   const cap = new cv.VideoCapture(videoFile);
   let done = false;
   const intvl = setInterval(() => {
-    let frame = cap.read();
+    let frame = cap.read().flip(1);
     // loop back to start on end of stream reached
     if (frame.empty) {
       cap.reset();
-      frame = cap.read();
+      frame = cap.read().flip(1);
     }
     onFrame(frame);
 
