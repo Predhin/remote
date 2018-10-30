@@ -21,22 +21,33 @@
 
   <!-- Start your project here-->
   <div class="container">
-    <div class="row margin-top-100">
+    <div class="row ui-wrapper">
       <div class="col-md-9">
-        <div class="video_box">
+        <div class="video-box text-center">
           <img id="regionOfCapture" />
         </div>
       </div>
       <div class="col-md-3">
-        <div class="reading-box">
-          
-          <div class="loader-wrapper">
-            <span class="loader-scanner" id="loader-scanner">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="reading-box scanner-wrapper">
+              <div class="loader-wrapper">
+                <span class="loader-scanner" id="loader-scanner">
             </span>
-            <i class="fa fa-hand-paper-o"></i>
-            <a id="text">Loading...</a>
+                <i class="fa fa-hand-paper-o"></i>
+              </div>
+              <p id="scannerStatus" class="scanner-text text-center">Scanning...</p>
+            </div>
+          </div>
+          <div class="col-xs-12">
+            <div class="reading-box fan-wrapper text-center">
+              <img class="fan fa-spin off" src="/images/fan.png" id="fan">
+              <br />
+               <div id="text">OFF</div>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
