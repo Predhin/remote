@@ -88,7 +88,7 @@ function hideClass(name) {
         CLEAR_TIME: 3000,
         CLOUD_FREQUENCY: 0.5,
         GAMEOVER_CLEAR_TIME: 750,
-        GAP_COEFFICIENT: 0.6,
+        GAP_COEFFICIENT: 1,
         GRAVITY: 0.6,
         INITIAL_JUMP_VELOCITY: 12,
         MAX_CLOUDS: 6,
@@ -97,7 +97,7 @@ function hideClass(name) {
         MIN_JUMP_HEIGHT: 35,
         MOBILE_SPEED_COEFFICIENT: 1.2,
         RESOURCE_TEMPLATE_ID: 'audio-resources',
-        SPEED: 6,
+        SPEED: 5,
         SPEED_DROP_COEFFICIENT: 3
     };
     /**
@@ -226,7 +226,13 @@ function hideClass(name) {
                 var resourceTemplate =
                     document.getElementById(this.config.RESOURCE_TEMPLATE_ID).content;
                 for (var sound in Runner.sounds) {
-                    this.soundFx[sound] = resourceTemplate.getElementById(Runner.sounds[sound]);
+                    var soundSrc = resourceTemplate.getElementById(Runner.sounds[sound]).src;
+                    soundSrc = soundSrc.substr(soundSrc.indexOf(',') + 1);
+                    var buffer = decodeBase64ToArrayBuffer(soundSrc);
+                    // Async, so no guarantee of order in array.
+                    this.audioContext.decodeAudioData(buffer, function (index, audioData) {
+                        this.soundFx[index] = audioData;
+                    }.bind(this, sound));
                 }
             }
         },
@@ -627,7 +633,12 @@ function hideClass(name) {
         * @param {SoundBuffer} audio Element
         */
         playSound: function (soundBuffer) {
-            //soundBuffer.play();
+            if (soundBuffer) {
+                var sourceNode = this.audioContext.createBufferSource();
+                sourceNode.buffer = soundBuffer;
+                sourceNode.connect(this.audioContext.destination);
+                sourceNode.start(0);
+            }
         }
     };
     /**
@@ -942,7 +953,7 @@ function hideClass(name) {
     * Coefficient for calculating the maximum gap.
     * @const
     */
-    Obstacle.MAX_GAP_COEFFICIENT = 2;
+    Obstacle.MAX_GAP_COEFFICIENT = 2.5;
     /**
     * Maximum obstacle grouping count.
     * @const
