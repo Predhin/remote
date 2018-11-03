@@ -6,13 +6,20 @@
     var scanner = document.getElementById('scanning-loader');
     var fan = document.getElementById('fan');
     var scannerStatus = document.getElementById('scannerStatus');
+    let instructionPanels = $(".instruction");
 
     socket.on('startScan', function (data) {
         $(scanner).removeClass('stop');
         $(scanner).addClass('start');
         // scannerStatus.className = "scanner-text text-center";
     });
-    // TODO - for Dev purpose. Remove post development!!
+    socket.on('hand', function (data) {
+        if(data) {
+            instructionPanels.hide();
+        } else {
+            instructionPanels.show();
+        }
+    });
     socket.on('captured-image', function (data) {
         regionOfCapture.src = 'data:image/png;base64,' + data;
     });

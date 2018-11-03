@@ -31,6 +31,7 @@ function action(img, rawimg) {
   io.emit('captured-image', cv.imencode('.jpg', originalResizedImg).toString('base64'));
   hand = handDetection(img);
   if (hand) {
+    io.emit('hand', true);
     let state = getSpeed(prevFingersUp, delta, hand.numFingersUp);
     fingerNumOObj[state] = fingerNumOObj[state] ? fingerNumOObj[state] + 1 : 1;
     if (actionCounter % 10 === 0) {
@@ -52,6 +53,8 @@ function action(img, rawimg) {
       fingerNumOObj = {};
     }
     prevFingersUp = typeof hand.numFingersUp === 'number' || typeof hand.numFingersUp === 'string' ? parseInt(hand.numFingersUp) : 0;
+  } else {
+    io.emit('hand', false);
   }
 
   actionCounter++;
