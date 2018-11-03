@@ -8,6 +8,8 @@
   <title>Remote-Digi360</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
   <!-- Bootstrap core CSS -->
   <link href="css/bootstrap.css" rel="stylesheet">
   <!-- Material Design Bootstrap -->
@@ -20,31 +22,77 @@
 <body>
 
   <!-- Start your project here-->
-  <div class="container">
-    <div class="row ui-wrapper">
-      <div class="col-md-9">
-        <div class="video-box text-center">
-          <img id="regionOfCapture" />
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="reading-box scanner-wrapper">
-              <div class="loader-wrapper">
-                <span class="loader-scanner" id="loader-scanner">
-            </span>
-                <i class="fa fa-hand-paper-o"></i>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 noSpace">
+        <div class="video-box">
+          <img id="regionOfCapture" src="https://loremflickr.com/320/240" />
+          <div class="overlay-square">
+            <div class="overlay-square-inner instruction">
+              <div class="row overlay-square-inner-container">
+                <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                  <img class="hand" src="./svg/hand.svg" alt="Hand Gesture">
+                </div>
               </div>
-              <p id="scannerStatus" class="scanner-text text-center">Scanning...</p>
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 col-md-offset-3">
+                  <p class="animated fadeIn handgesture-instruction text-center">
+                    Please place your hand infront of the camera screen to control the device
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-xs-12">
-            <div class="reading-box fan-wrapper text-center">
-              <img class="fan fa-spin off" src="/images/fan.png" id="fan">
-              <br />
-               <div id="text">OFF</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+        <div class="row fullHeight">
+          <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 fullHeight">
+            <div class="row fullWidth padTop">
+              <div class="col-md-8 col-sm-8 col-lg-8 col-xs-8 col-md-offset-4 output-container">
+                <div class="row fullWidth">
+                  <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                    <div class="fan-body">
+                      <object data="svg/fan-body.svg" type="image/svg+xml">
+                        <img src="./images/fan-body.png" />
+                      </object>
+                      <div id="fan" class="fan-leaf fan fa-spin off">
+                        <object data="svg/fan-leaf.svg" type="image/svg+xml">
+                          <img src="./images/fan-leaf.png" />
+                        </object>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row fullWidth text-center">
+                  <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                    <div id="welcome" class="row instruction">
+                      <h2 class="current-status">Welcome</h2>
+                    </div>
+                    <div class="row">
+                      <div id="scanning-container">
+                        <div id="scanning-loader" class="scanning-loader">
+                          <object data="svg/scanning.svg" type="image/svg+xml">
+                            <img src="./images/scanning.png" />
+                          </object>
+                        </div>
+                        <h2 id="scanning" class="current-status">Scanning</h2>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div id="detection" class="detection">
+                        <h2 id="welcome" class="current-status">Detected Speed</h2>
+                        <br>
+                        <h1 id="text">OFF
+                        </h1>
+                        <h4 class="output-instruction">Place your hand over and change the speed</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <br>
           </div>
         </div>
 
