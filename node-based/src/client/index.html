@@ -48,7 +48,7 @@
       <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
         <div class="row fullHeight">
           <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 fullHeight">
-            <div class="row fullWidth">
+            <div class="row fullWidth padTop">
               <div class="col-md-8 col-sm-8 col-lg-8 col-xs-8 col-md-offset-4 output-container">
                 <div class="row fullWidth">
                   <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
@@ -70,12 +70,14 @@
                       <h2 class="current-status">Welcome</h2>
                     </div>
                     <div class="row">
-                      <div id="scanning-loader" class="scanning-loader">
-                        <object data="svg/scanning.svg" type="image/svg+xml">
-                          <img src="./images/scanning.png" />
-                        </object>
+                      <div id="scanning-container">
+                        <div id="scanning-loader" class="scanning-loader">
+                          <object data="svg/scanning.svg" type="image/svg+xml">
+                            <img src="./images/scanning.png" />
+                          </object>
+                        </div>
+                        <h2 id="scanning" class="current-status">Scanning</h2>
                       </div>
-                      <h2 id="scanning" class="current-status">Scanning</h2>
                     </div>
                     <div class="row">
                       <div id="detection" class="detection">
@@ -92,23 +94,6 @@
             </div>
             <br>
           </div>
-          <!--<div class="col-xs-12">
-            <div class="reading-box scanner-wrapper">
-              <div class="loader-wrapper">
-                <span class="loader-scanner" id="loader-scanner">
-                </span>
-                <i class="fa fa-hand-paper-o"></i>
-              </div>
-              <p id="scannerStatus" class="scanner-text text-center">Scanning...</p>
-            </div>
-          </div>
-          <div class="col-xs-12">
-            <div class="reading-box fan-wrapper text-center">
-              <img class="fan fa-spin off" src="/images/fan.png" id="fan">
-              <br />
-              <div id="text">OFF</div>
-            </div>
-          </div>-->
         </div>
 
       </div>

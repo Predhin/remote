@@ -5,6 +5,9 @@
 .fullWidth {
   width: 100%;
 }
+.padTop {
+  padding-top: 5%;
+}
 .centerAligned {
   display: flex;
   align-items: center;
@@ -21,14 +24,6 @@
   height:100vh;
   width: 100%;
   height: 100%;
-}
-.hand-old {
-  font-size: 150px;
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
 }
 .hand {
   width: 15vw;
@@ -102,6 +97,8 @@
   display: inline-block;
   position: relative;
   top: 15px;
+  animation: scan 2s linear 1s infinite normal;
+  animation-play-state: running;
 }
 .reading-box{
   height:300px;
