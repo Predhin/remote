@@ -12,17 +12,17 @@
     socket.on('startScan', function (data) {
         $(scanner).removeClass('stop');
         $(scanner).addClass('start');
-        scannerContainer.show();
+        scannerContainer.animate({ opacity: 1 });
         // detectionContainer.hide();
     });
     socket.on('hand', function (data) {
         if(data) {
             instructionPanels.hide();
-            scannerContainer.show();
+            scannerContainer.animate({ opacity: 1 });
         } else {
             instructionPanels.show();
             // detectionContainer.hide();
-            scannerContainer.hide();
+            scannerContainer.animate({ opacity: 0 });
         }
     });
     socket.on('captured-image', function (data) {
@@ -31,8 +31,8 @@
     socket.on('count', function (data) {
         document.getElementById("text").innerHTML = data;
         $(scanner).removeClass('start');
-        $(scanner).addClass('stop');
-        scannerContainer.hide();
+        // $(scanner).addClass('stop');
+        scannerContainer.animate({ opacity: 0 });
         detectionContainer.show();
         
         fan.className = "fan-leaf fan fa-spin " + data.toLowerCase();
