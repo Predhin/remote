@@ -34,7 +34,7 @@ npm start
 
 - [x] Computer Vision
 - [x] socket.io
-- [ ] IoT
+- [x] IoT
 
 ### FAQ
 
@@ -46,12 +46,17 @@ How to setup different Git profiles ?
 - [opencv](https://github.com/justadudewhohacks/opencv4nodejs)
 - [gest](https://hadi.io/gest.js/)
 
+### UX/VD Links
+
+- [VD Screens](https://xd.adobe.com/view/35bb1f83-1ddd-4c4b-5816-c0e83fb20548-438a/screen/ead4101d-5142-4f20-bdfd-d4091850a999/Digi-360-3?fullscreen)
+- [VD Spec](https://xd.adobe.com/spec/3f4a5f41-2ad4-408b-7195-fad936acc5d2-497b/screen/ead4101d-5142-4f20-bdfd-d4091850a999/Digi-360-3/)
+
 ### To Do
 
 - [x] Web-based landing and gaming
-- [ ] Create ui for node-based page(containing video)
-- [ ] Integrate node-based with node-mcu webservice and improve detection
-- [ ] Raspberry pi integration
+- [x] Create ui for node-based page(containing video)
+- [x] Integrate node-based with node-mcu webservice and improve detection
+- [x] Raspberry pi integration
 
 ### Change Log
 
